@@ -1,1 +1,1 @@
-# Dazai-language-translator-tool
+The project aims to develop an English-to-Hindi Language Translator Tool intended for official use by government organizations. This tool will facilitate effective communication and accessibility by offering accurate translations of English content into Hindi, India's official language. This project addresses the critical need for language accessibility within government organizations, fostering better communication and outreach across diverse linguistic backgrounds, ultimately promoting inclusivity and efficiency in official communications.
