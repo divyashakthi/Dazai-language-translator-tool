@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gru groceries</title>
+    <!-- <link rel = "stylesheet" href="styles.css"> -->
+    <style>
+        .highlight {
+          background-color: lime;
+          display: inline;
+          position: relative;
+          cursor: pointer;
+        }
+      
+        .synonym-box {
+          display: none;
+          position: absolute;
+          background-color: white;
+          border: 1px solid #ccc;
+          padding: 7px;
+          box-shadow: 0px 0px 5px cyan;
+          font-weight: bold;
+        }
+      </style>      
+</head>
+<body>
+    <h1><center>*** GRU GROCERIES ***</center></h1>
+    <center><img src="https://g.foolcdn.com/editorial/images/160552/grocery-bag-full-of-fresh-produce.jpg" width="200" height="200"></center>
+    <h1>EVERYDAY NEEDS</h1>
+    <ul>
+        <li>milk</li>
+        <li>salt</li>
+        <li>pepper</li>
+        <li>meat</li>
+        <li>bread</li>
+    </ul>
+    
+    <h1>Place your order now!!!</h1>
+    <h3>Select items by <span class="highlight">clicking</span> on their respective check-boxes to add to your <span class="highlight">cart</span></h3>
+    <div class="synonym-box" id="synonymBox"></div>
+
+    <form>
+        <input type="checkbox" id="milk" name="milkname" value="milkk">MILK<br>
+        <input type="checkbox" id="salt" name="saltname" value="saltt">SALT<br>
+        <input type="checkbox" id="pepper" name="peppername" value="pepperr">PEPPER<br>
+        <input type="checkbox" id="meat" name="meatname" value="meatt">MEAT<br>
+        <input type="checkbox" id="bread" name="breadname" value="breadd">BREAD<br>
+        <br><input type="submit" value="ADD TO CART">
+        <br><br>
+    </form>
+
+    <h3><center>Proceed to <span class="highlight">check out</span></center></h3>
+
+    <article class="all">
+    <form>
+        NAME:<input type="text"><br>
+        MOBILE:<input type="text"><br>
+        MAIL:<input type="text"><br><br>
+        <center><input type="submit" value="PROCEED TO PAY"></center>
+    </form>
+    </article>
+
+    <button id="translateButton">Translate to Hindi</button>
+    <button id="speakButton">Text to Speech</button>
+
+    <script>
+        document.getElementById("translateButton").addEventListener("click", function () {
+            googleTranslateToHindi();
+        });
+    
+        document.getElementById("speakButton").addEventListener("click", function () {
+            fetch('/button-click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'text=' + encodeURIComponent(''), 
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    
+        function googleTranslateToHindi() {
+            var script = document.createElement("script");
+            script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+            document.body.appendChild(script);
+    
+            window.googleTranslateElementInit = function () {
+                new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'hi', layout: google.translate.TranslateElement.InlineLayout.SIMPLE }, 'google_translate_element');
+            };
+        }
+
+        function getSynonym(word) {
+            if(word == "cart")
+            {return "एक ऑनलाइन शॉपिंग साइट पर उपयोगकर्ता द्वारा चयनित आइटम का संग्रहण और खरीदारी के लिए जगह";}
+            else if(word == "check out")
+            {return "ऑनलाइन खरीदारी के दौरान चयनित आइटमों को खरीदने के लिए भुगतान की प्रक्रिया का हिस्सा"}
+            else
+            {return "माउस के बटन को दबाने का क्रिया, विशेषकर वेब पेज पर हाइपरलिंक या बटन पर क्लिक करने के लिए"}
+        }
+
+        const highlightElements = document.querySelectorAll('.highlight');
+        const synonymBox = document.getElementById('synonymBox');
+
+        highlightElements.forEach(element => {
+            element.addEventListener('mouseover', function () {
+            const word = this.textContent;
+            const synonym = getSynonym(word);
+            const rect = this.getBoundingClientRect();
+
+            synonymBox.style.display = 'block';
+            synonymBox.style.left = `${rect.left}px`;
+            synonymBox.style.top = `${rect.bottom}px`;
+
+            synonymBox.textContent = `अर्थ: ${synonym}`;
+            });
+
+            element.addEventListener('mouseout', function () {
+            synonymBox.style.display = 'none';
+            });
+        });
+    </script>
+    <div id="google_translate_element"></div>
+</body>
+</html>
